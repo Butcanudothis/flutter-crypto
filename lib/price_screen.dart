@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:bitcoin_ticker/coin_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PriceScreen extends StatefulWidget {
@@ -14,6 +17,15 @@ class _PriceScreenState extends State<PriceScreen> {
       dropdownItems.add(newItem);
     }
     return dropdownItems;
+  }
+
+  List<Widget> getPickerList() {
+    List<Widget> pickerList;
+    for (String currency in currenciesList) {
+      var newItem = Text(currency);
+      pickerList.add(newItem);
+    }
+    return pickerList;
   }
 
   String SelectedCurrency = 'USD';
@@ -49,24 +61,33 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
           ),
           Container(
-            height: 150.0,
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 30.0),
-            color: Colors.lightBlue,
-            child: DropdownButton(
-              items: getDropdownList(),
-              onChanged: (value) {
-                setState(
-                  () {
-                    SelectedCurrency = value;
+              height: 150.0,
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: 30.0),
+              color: Colors.lightBlue,
+              child: CupertinoPicker(
+                  offAxisFraction: 1,
+                  diameterRatio: 5,
+                  itemExtent: 35.0,
+                  onSelectedItemChanged: (value) {
+                    setState(() {
+                      print(value);
+                    });
                   },
-                );
-              },
-              value: SelectedCurrency,
-            ),
-          ),
+                  children: getPickerList())),
         ],
       ),
     );
   }
 }
+//DropdownButton(
+//              items: getDropdownList(),
+//              onChanged: (value) {
+//                setState(
+//                  () {
+//                    SelectedCurrency = value;
+//                  },
+//                );
+//              },
+//              value: SelectedCurrency,
+//            ),
