@@ -20,9 +20,12 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   List<Widget> getPickerList() {
-    List<Widget> pickerList;
+    List<Text> pickerList = [];
     for (String currency in currenciesList) {
-      var newItem = Text(currency);
+      var newItem = Text(
+        currency,
+        style: TextStyle(color: Colors.white),
+      );
       pickerList.add(newItem);
     }
     return pickerList;
@@ -66,8 +69,8 @@ class _PriceScreenState extends State<PriceScreen> {
               padding: EdgeInsets.only(bottom: 30.0),
               color: Colors.lightBlue,
               child: CupertinoPicker(
-                  offAxisFraction: 1,
-                  diameterRatio: 5,
+                  offAxisFraction: 0.0,
+                  diameterRatio: 0.77,
                   itemExtent: 35.0,
                   onSelectedItemChanged: (value) {
                     setState(() {
