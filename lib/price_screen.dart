@@ -1,6 +1,4 @@
-import 'dart:io';
-import 'dart:math';
-import 'apikey.dart';
+
 import 'package:bitcoin_ticker/coin_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,26 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-//  DropdownButton getDropdownButton() {
+  @override
+  void initState() {
+    super.initState();
+    getCoinData();
+  }
+
+  void getCoinData() async {
+    CoinData coinData = CoinData();
+    var coinJson = await coinData.getCoinInfo('BTC', SelectedCurrency);
+    updateUI(coinJson);
+  }
+
+  String exRate;
+  void updateUI(dynamic coin) {
+    setState(() {
+      exRate = coin['rate'].toStringAsFixed(2);
+      print(exRate);
+    });
+  }
+  //  DropdownButton getDropdownButton() {
 //    List<DropdownMenuItem<String>> dropdownItems = [];
 //    for (String currency in currenciesList) {
 //      var newItem = DropdownMenuItem(child: Text(currency), value: currency);
@@ -46,7 +63,9 @@ class _PriceScreenState extends State<PriceScreen> {
       itemExtent: 35.0,
       onSelectedItemChanged: (value) {
         setState(() {
-          print(value);
+          print(currenciesList[value]);
+          SelectedCurrency = currenciesList[value];
+          getCoinData();
         });
       },
       children: pickerList,
@@ -75,7 +94,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  '1 BTC = $exRate $SelectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
