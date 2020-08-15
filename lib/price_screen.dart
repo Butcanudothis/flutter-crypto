@@ -1,4 +1,3 @@
-
 import 'package:bitcoin_ticker/coin_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +16,19 @@ class _PriceScreenState extends State<PriceScreen> {
 
   void getCoinData() async {
     CoinData coinData = CoinData();
-    var coinJson = await coinData.getCoinInfo('BTC', SelectedCurrency);
+    List coinJson = [
+      await coinData.getCoinInfo('BTC', SelectedCurrency),
+      await coinData.getCoinInfo('ETH', SelectedCurrency),
+    ];
     updateUI(coinJson);
   }
 
   String exRate;
+  String exRateETH;
   void updateUI(dynamic coin) {
     setState(() {
-      exRate = coin['rate'].toStringAsFixed(2);
+      exRate = coin[0]['rate'].toStringAsFixed(2);
+      exRateETH = coin[1]['rate'].toStringAsFixed(2);
       print(exRate);
     });
   }
@@ -95,6 +99,27 @@ class _PriceScreenState extends State<PriceScreen> {
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
                   '1 BTC = $exRate $SelectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 ETH = $exRateETH $SelectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
